@@ -3,6 +3,7 @@ import {HubConnectionBuilder, LogLevel} from '@aspnet/signalr';
 import axios from 'axios';
 import queryString from 'query-string';
 import { Table } from 'reactstrap';
+import { NavMenu} from "./NavMenu";
 
 
 export class Home extends Component {
@@ -102,7 +103,7 @@ export class Home extends Component {
                             <td>
                                 {file.type === 1 ? "Dir" : "File"}
                             </td>
-                            <td>{file.name}</td>
+                            <td><a href={'/api/file/filestream?file='+encodeURIComponent(file.fullPath)}>{file.name}</a></td>
                         </tr>
                     ))}
                     </tbody>

@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using tusdotnet;
+using tusdotnet.Interfaces;
+using tusdotnet.Models;
+using tusdotnet.Models.Configuration;
+using tusdotnet.Stores;
 
 namespace HillFile.Web
 {
@@ -63,6 +68,20 @@ namespace HillFile.Web
                 if (env.IsDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+            });
+            
+            app.UseTus(context => new DefaultTusConfiguration
+            {
+                //@todo get from config
+                Store = new TusDiskStore(@"/tmp"),
+                UrlPath = "/files",
+                Events = new Events
+                {
+                    OnFileCompleteAsync = async ctx =>
+                    {
+                        var file = await ((ITusReadableStore)ctx.Store).GetFileAsync(ctx.FileId, ctx.CancellationToken);
+                    }
                 }
             });
         }

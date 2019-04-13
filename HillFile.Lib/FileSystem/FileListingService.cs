@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -51,6 +52,17 @@ namespace HillFile.Lib.FileSystem
             hfFileInfo.AccessDate = File.GetLastAccessTime(filePath);
 
             return hfFileInfo;
+        }
+
+        public FileStream LoadFileStream(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                var fs = new FileStream(filePath, FileMode.Open);
+                return fs;
+            }
+            
+            throw new FileNotFoundException();
         }
     }
 }
