@@ -1,6 +1,7 @@
 using HillFile.Lib.Abstractions.Interfaces;
 using HillFile.Lib.FileSystem;
 using HillFile.Web.Hubs;
+using HillFile.Web.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,7 @@ namespace HillFile.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IFileBackend, FileListingService>();
+            services.AddTransient<ICurrentUserDirectoryService, CurrentUserDirectoryService>();
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });

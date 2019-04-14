@@ -1,6 +1,7 @@
 using System.Linq;
 using HillFile.Lib.Abstractions.Interfaces;
 using HillFile.Lib.Etc;
+using HillFile.Web.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HillFile.Web.Controllers
@@ -9,6 +10,7 @@ namespace HillFile.Web.Controllers
     public class FileController: Controller
     {
         private readonly IFileBackend fileBackend;
+        private readonly ICurrentUserDirectoryService currentUserDirectoryService;
 
         public FileController(IFileBackend fileBackend)
         {
@@ -18,6 +20,8 @@ namespace HillFile.Web.Controllers
         [Route("filestream")]
         public IActionResult FileStream([FromQuery] string file)
         {
+            file = '/' + currentUserDirectoryService.GetCurrentUserDirectory().Trim('/') + '/' + file.Trim('/') + '/';
+            
             var fs = fileBackend.LoadFileStream(file);
             var fileInfo = fileBackend.LoadFileInfo(file);
 
