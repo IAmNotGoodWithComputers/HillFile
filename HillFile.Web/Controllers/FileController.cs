@@ -12,15 +12,16 @@ namespace HillFile.Web.Controllers
         private readonly IFileBackend fileBackend;
         private readonly ICurrentUserDirectoryService currentUserDirectoryService;
 
-        public FileController(IFileBackend fileBackend)
+        public FileController(IFileBackend fileBackend, ICurrentUserDirectoryService currentUserDirectoryService)
         {
             this.fileBackend = fileBackend;
+            this.currentUserDirectoryService = currentUserDirectoryService;
         }
 
         [Route("filestream")]
         public IActionResult FileStream([FromQuery] string file)
         {
-            file = '/' + currentUserDirectoryService.GetCurrentUserDirectory().Trim('/') + '/' + file.Trim('/') + '/';
+            file = '/' + currentUserDirectoryService.GetCurrentUserDirectory().Trim('/') + '/' + file.Trim('/');
             
             var fs = fileBackend.LoadFileStream(file);
             var fileInfo = fileBackend.LoadFileInfo(file);

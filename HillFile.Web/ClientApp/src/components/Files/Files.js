@@ -101,7 +101,6 @@ export class Files extends Component {
                     ))}
                     </tbody>
                 </Table>
-                <Link to={'/files/go'}>Test</Link>
             </div>
         );
     }
