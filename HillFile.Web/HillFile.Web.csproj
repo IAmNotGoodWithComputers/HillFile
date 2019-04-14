@@ -24,6 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\HillFile.DbAccess\HillFile.DbAccess.csproj" />
       <ProjectReference Include="..\HillFile.Lib\HillFile.Lib.csproj" />
     </ItemGroup>
 

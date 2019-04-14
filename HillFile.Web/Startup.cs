@@ -1,9 +1,11 @@
+using HillFile.DbAccess;
 using HillFile.Lib.Abstractions.Interfaces;
 using HillFile.Lib.FileSystem;
 using HillFile.Web.Hubs;
 using HillFile.Web.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
@@ -29,6 +31,13 @@ namespace HillFile.Web
         {
             services.AddTransient<IFileBackend, FileListingService>();
             services.AddTransient<ICurrentUserDirectoryService, CurrentUserDirectoryService>();
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<HillFileDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddAuthentication()
+                .AddCookie();
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
@@ -47,6 +56,8 @@ namespace HillFile.Web
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
